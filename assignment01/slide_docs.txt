@@ -1,0 +1,91 @@
+[COMP1511 Extension Work]
+
+Write a summary of how you made the changes that you did:
+
+[E1:Summary] {{{
+I have made several changes that allowed me to implement Night Mode when the 
+shift-left command is pressed. I created another array called night_map and 
+another print function to be able to print out this map First, I changed the 
+block input requirements so it would accept negative numbers and scan them 
+into the night_map array. Then I duplicated the main function and changed it 
+to affect the night_map, and duplicated the extra day_map functions and changed
+them to affect the night_map as well. I made changes to the end condition for
+shooting the laser to ensure both maps had to be cleared before the Game Won! 
+prompt.
+
+I then created two tests, 
+- Test 1 tests the rotate only once rule regardless of which map
+- Test 2 which tests the left shift end condition for the night map 
+
+}}}
+
+Write two tests to test your implementation of Extension 1 ("Night Realm").
+
+[E1:Test 1] {{{
+5
+7 14 5
+7 13 1
+4 3 -1
+4 4 -1
+4 7 -1
+
+4 2
+3
+4 1
+3
+
+}}}
+[E1:Test 2] {{{
+2
+2 1 -1
+5 6 1
+3
+3
+3
+}}}
+
+===========================================================================
+
+Write a summary of how you made the changes that you did:
+
+[E2:Summary] {{{
+I have made several changes that allowed me to implement Mirror Blocks when the value of the blocks were input as 2 and the laser was fired. I added another possibility in the main function, that a value in the array could be 2, and this would commence a new function for destroying up to two blocks of either side perpendicular to where the mirror block is placed. Within this function I set an index that would make the loop go through the perpendicular blocks on either side up to two times. I then set those array indexes to the value of 0 (EMPTY). I also added another while loop into 
+
+I then created two tests, 
+- Test 1 tests that the code disregards out-of-bounds indexes 
+- Test 2 
+
+}}}
+
+Write two tests to test your implementation of Extension 2 ("Mirror Blocks").
+
+[E2:Test 1] {{{
+4
+1 13 2
+0 13 1
+2 13 1
+1 14 1
+1 -1 
+1 -1 
+1 -1 
+1 -1 
+1 -1 
+1 -1 
+2
+
+}}}
+[E2:Test 2] {{{
+9
+7 7 2
+6 7 1
+5 7 1
+8 7 1
+9 7 1
+7 6 1
+7 8 1
+7 5 1
+7 4 1
+
+2
+
+}}}
