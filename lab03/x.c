@@ -1,0 +1,31 @@
+//This program will create a shape of an X with an n x n pattern of 
+//asterisks and dashes
+//Chloe Toh
+//z5362296
+
+#include <stdio.h>
+
+int main(void) {
+    //Declare a variable 
+    int size; 
+    //Ask user for input and store input
+    printf("Enter size: ");
+    scanf("%d", &size);
+    //Use a loop to detemine either a * or _ for each row 
+    int row = 1;
+    while (row <= size) {
+        //Use a loop to determine either a * or _ for each column
+        int column = 1;
+        while (column <= size) {
+            if (row == column || row + column == size + 1) {
+                printf("*");
+            } else {
+                printf("-");
+            }
+            column++;  
+        }
+        printf("\n");
+        row++;
+    }
+    return 0;
+}

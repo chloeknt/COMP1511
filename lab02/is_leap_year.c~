@@ -1,0 +1,30 @@
+//Program will determine if the year input is a leap year
+//Chloe Toh 26/02/2021
+//z5362296 
+
+#include <stdio.h>
+
+int main(void) {
+
+    //declaring a variable
+    int year; 
+    //ask for user input 
+    printf("Enter year: ");
+    //scan user's input 
+    scanf("%d", &year);
+    //when it is divisible by four but not divisible by 100
+    if ((year % 4 == 0) && !(year % 100 == 0)) {
+        printf("%d is a leap year.\n", year);
+    //when it is divisible by four and 100 and 400
+    } else if ((year % 4 == 0) && (year % 100 == 0) && (year % 400 == 0)) {
+        printf("%d is a leap year.\n", year);
+    //when it is divisible by four and 100 but not 400
+    } else if ((year % 4 == 0) && (year % 100 == 0) && !(year % 400 == 0)) {
+        printf("%d is not a leap year.\n", year);
+    //when it is not divisible by four
+    } else {
+        printf("%d is not a leap year.\n", year);
+    }
+    
+    return 0; 
+}

@@ -1,0 +1,47 @@
+//motd
+// Chloe Toh, 19/02/21
+
+#include <stdio.h>
+
+int main(void) {
+
+    printf("\033[0;36m");
+    printf("Hello Chloe!\n");
+    printf("\033[0;35m");
+    printf("Looking forward to class today!\n");
+    printf("\033[0;32m");
+    printf("<3\n");
+    printf("_(,__           __),\n");
+    printf("(_,d888888888b,d888888888b\n");
+    printf("d888888888888/888888888888b_)\n");
+    printf("(_8888888P'""'`Y8Y`'""'"Y88888b\n");
+    printf("  Y8888P.-'     `      '-.Y8888b_)\n");
+    printf(",_Y88P (_(_(        )_)_) d88Y_,\n");
+    printf(" Y88b,  (o  )      (o  ) d8888P\n");
+    printf(" `Y888   '-'        '-'  `88Y`\n");
+    printf(" ,d/O\         c         /O\b,\n");
+    printf("  \_/'.,______w______,.'\_/\n");
+    printf("     .-`             `-.\n");
+    printf("    /   , d88b  d88b_   \n");
+    printf("   /   / 88888bd88888`\  \n");
+    printf(" /   / \ Y88888888Y   \  \n");
+    printf("  \  \   \ 88888888    /  /\n");
+    printf("    `\ `.  \d8888888b, /\\/\n");
+    printf("       `.//.d8888888888b; |\n");
+    printf("         |/d888888888888b/\n");
+    printf("        d8888888888888888b\n");
+    printf("     ,_d88p""q88888p""q888b,\n");
+    printf("     `""'`\    "`|    /`'""`\n");
+    printf("           `.    |===/\n");
+    printf("             >   |   |\n");
+    printf("             /   |   |\n");
+    printf("            |    |   |\n");
+    printf("           |    Y  /\n");
+    printf("            \   /  /\n");
+    printf("             | /| /\n");
+    printf("             / / / |\n");
+    printf("         /=/  |=/\n");
+    printf("           `"`   `"`\n");
+    
+    return 0;
+}
