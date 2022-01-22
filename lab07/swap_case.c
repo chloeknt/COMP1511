@@ -1,0 +1,41 @@
+// Function to print out a string that has had it's cases swapped.
+// swap_case.c
+//
+// This program was written by Chloe Toh (z5362296)
+// on 31/03/2021
+ 
+#include <stdio.h>
+
+//Function for swapping the case of the character
+int swap_case(int character);
+
+int main(void) {
+    //Declare a character and read from terminal
+    int character = getchar();
+    //While the character is valid 
+    while (character != EOF) {
+        //Call the swap case function
+        int new_character = swap_case(character);
+        //Print out the new modified character 
+        putchar(new_character);
+        //Set the character to the next input 
+        character = getchar();
+    }
+    return 0;
+}
+
+//Function for swapping upper to lower and vice versa
+int swap_case(int character) {
+    //If the character is lower case, change it to upper case
+    if (character >= 'a' && character <= 'z') {
+        int alphabetPosition = character - 'a';
+        return 'A' + alphabetPosition;
+    //If the character is upper case, change it to lower case
+    } else if (character >= 'A' && character <= 'Z'){
+        int alphabetPosition = character - 'A';
+        return 'a' + alphabetPosition;
+    //Otherwise it remains unchanged
+    } else {
+        return character;
+    }
+}
