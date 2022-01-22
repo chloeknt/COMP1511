@@ -1,0 +1,29 @@
+#include <stdio.h>
+
+int main(void) {
+
+    // print an int and double
+    int diameter = 5;
+    double pi = 3.14159;
+    printf("Diameter is %d, pi is , %lf\n", diameter, pi);
+    
+    // reading an integer
+    printf ("please type in a number:\n");
+    scan ("%d", &input);
+    
+    // reading a double 
+    double input_double;
+    printf("please type in a decimal point number:\n");
+    scan ("%lf, &input_double); 
+    
+    // some basic maths
+    int x = 5;
+    int y = 10;
+    int result;
+    result = (x+y) * x;
+    printf("My maths comes out to: %d\n", result);
+    
+    
+return 0; 
+    
+}
