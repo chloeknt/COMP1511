@@ -1,0 +1,24 @@
+/*  Battle Royale- Header
+    A linked list example that tracks players in a game.
+    We want to be able to maintain the list
+    as well as remove players as they are knocked out.
+    We also want to be able to display who is currently
+    still in the game.
+    
+    Marc Chee (cs1511@cse.unsw.edu.au) April 1st 2021
+*/
+
+#define MAX_NAME_LENGTH 100
+
+// "Player" now means the same thing as "struct player *"
+typedef struct player *Player;
+
+// Functions
+// Create a player by allocating memory,
+// populating their data then returning a pointer to them
+Player create_player(char new_name[MAX_NAME_LENGTH], Player new_next);
+
+//Loop through and display the players
+//One per line in the terminal 
+void print_players(Player head);
+

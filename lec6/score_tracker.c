@@ -1,0 +1,68 @@
+//Arrays demo
+//Tracks the score of four players
+//Find the winner and total the scores together
+//Chloe Toh z5362296
+
+#include <stdio.h>
+
+#define NUM_PLAYERS 4 
+
+void print_players(int score_array[], int length); 
+int find_highest(int score_array[], int length);
+int total_score(int score_array[], int length);
+
+int main(void) {
+   int scores [NUM_PLAYERS] = {};
+   
+   scores[0] = 95;
+   scores[1] = 907;
+   scores[2] = 1567;
+   scores[3] = 732;
+   
+   print_players(scores, NUM_PLAYERS);
+   int current_winner = find_highest(scores, NUM_PLAYERS);
+   printf("Total score is: %d\n", total_score(scores, NUM_PLAYERS));
+}
+
+//Will print out the scores of the players in order 
+//Will print from the start of the array until index length - 1  
+//Will not change any values in the array
+void print_players(int score_array[], int length) {
+    int i = 0;
+    while (i < length) {
+        printf("Player number %d has %d points.\n", i, score_array[i]);
+        i++;
+   }
+}
+//Finds the highest score from the start of the score_array to the index 
+//length -1 
+//Prints out the highest score 
+//Returns the index that the highest score was in
+int find_highest(int score_array[], int length) {
+    int highest = 0;
+    int index_highest = -1;
+    //Loop through the score array
+    int i = 0;
+    while (i < length) {
+        //Check if the current score is higher than the highest
+        if (score_array[i] > highest) {
+            highest = score_array[i];
+            index_highest = i;
+         }
+        i++;
+    }
+ printf("Player %d has the highest score with %d\n", index_highest, 
+ highest);
+ return index_highest;
+}
+//Returns the sum of all scores between index 0 and length - 1
+int total_score(int score_array[], int length) {
+    int total = 0;
+    int i = 0;
+    while (i < length) {
+        total += score_array[i];
+        i++;
+    }
+    return total;
+}
+    

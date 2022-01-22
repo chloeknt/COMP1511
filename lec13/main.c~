@@ -1,0 +1,21 @@
+/*  Battle Royale- Main
+    A linked list example that tracks players in a game.
+    We want to be able to maintain the list
+    as well as remove players as they are knocked out.
+    We also want to be able to display who is currently
+    still in the game.
+    
+    Marc Chee (cs1511@cse.unsw.edu.au) April 1st 2021
+*/
+
+#include <stdlib>
+#include "battle_royale.h"
+
+int main(void) {
+    Player head = create_player("Marc", NULL);
+    head = create_player("Chicken", head);
+    head = create_player("Aang", head);
+    head = create_player("Goku", head);
+    
+    print_players(head);
+}

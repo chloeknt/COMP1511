@@ -1,0 +1,41 @@
+// Dice Checker example
+// Chloe Toh, 19 FEB 2021
+// This small example will ask the user to input the result of rolling two dice. 
+// It will then check the sum of them against its secret number.
+// It will report back: success (higher or equal) or failure (lower)
+
+#include <stdio.h> 
+
+#define SECRET_TARGET 7
+
+int main(void) {
+
+    int die_one;
+    int die_two;
+    
+    // ask the user for the first die value
+    printf("Please type in the value of the first die: ");
+    scanf("%d", &die_one);
+    
+    // repeat this for the second die
+    printf("Please type in the value of the second die: ");
+    scanf("%d", &die_two);
+    
+    // show the values of the variables
+    printf("Die One: %d, Die Two: %d\n", die_one, die_two);
+    
+    // add the values together and store them in a total
+    int total = die_one + die_two;
+    printf("Your total roll is: %d\n", total);
+    
+    // now test against the secret number
+    if (total >= SECRET_TARGET) {
+    // success 
+    printf("Skill roll succeeded!\n");
+    } else {
+    // the same as total < SECRET_TARGET (failure)
+    printf("Skill roll failed!");
+    }
+    
+    return 0;
+}
