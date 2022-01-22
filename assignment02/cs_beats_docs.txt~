@@ -1,0 +1,37 @@
+[COMP1511 Extension Work]
+
+Write a summary of how you made the changes that you did:
+
+[E1:Summary] {{{
+After transferring all the code from beats.c into ext_beats.c, I first determined cases in which no merging would take place and made the merge_beats function do nothing. I then made a new function to merge the beats_to_merge after and including the selected beat into the selected beat. I created a loop within this function that would call a function to find the last note of the selected beat in order to attach a head of a new list copied from one of the beats_to_merge beat using the copy_notes function after the selected beat. While the count variable was less than beats_to_merge, this loop would continue to run, and it also deletes the beat using the remove_merged_beat function after it has been copied and added to the selected beat. During each loop the sort_notes function would also be called to reorder the notes into ascending order. 
+
+}}}
+
+Write two tests to test your implementation of Extension 1 (Merging).
+
+*This test should *ONLY* test merging into 1 beat.*
+[E1:Test 1] {{{
+
+}}}
+
+*This test can test merging into any number of beats*
+[E1:Test 2] {{{
+
+}}}
+
+===========================================================================
+
+Write a summary of how you made the changes that you did:
+
+[E2:Summary] {{{
+
+}}}
+
+Write two tests to test your implementation of Extension 2 (Save and Restore).
+
+[E2:Test 1] {{{
+
+}}}
+[E2:Test 2] {{{
+
+}}}

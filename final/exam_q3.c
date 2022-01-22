@@ -1,0 +1,59 @@
+// exam_q3.c
+//
+// This program was written by CHLOE TOH (z5362296)
+// on 01/05/2021
+//
+// Identify pairs of integers that have the same value and figure out the 
+// distance between them. It then needs to print out the minimum 
+// distance that it found.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 10000
+
+int main(void) {
+    //Array for storing values
+    int array[MAX] = {0};
+    //Variable for the input
+    int num;
+    //Variable for number of values in the array
+    int count = 0;
+    //Counter variable 
+    int i = 0;
+    //Looping while there is user input
+    while (scanf("%d", &num) != EOF) {
+        //Store the numbers into the array
+        array[i] = num;
+        i++;
+        count++;
+    }
+    i = 0;
+    int distance_found[count] = {0};
+    int index = 0;
+    //While the user inputs exist 
+    while (i < count) {
+        int j = i + 1;
+        int distance = 1;
+        while (j < count) {
+            if (array[i] == array[j]) {
+                distance_found[index] = distance;
+                index++;
+            }
+            distance++;
+            j++;
+        }
+        i++;
+    }
+    int temp_distance = distance_found[0];
+    i = 1;
+    while (i < index) {
+        if (distance_found[i] < temp_distance) {
+            temp_distance = distance_found[i];
+        }
+        i++;
+    }
+    printf("The minimum distance was: %d\n", temp_distance);
+
+	return 0;
+}

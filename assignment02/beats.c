@@ -1,0 +1,499 @@
+// Assignment 2 21T1 COMP1511: Beats by CSE
+// beats.c
+//
+// This program was written by Chloe Toh (z5362296)
+// on 07/04/2021
+//
+// Version 1.0.0: Assignment released.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+
+// Add any extra #includes your code needs here.
+
+#include "beats.h"
+
+/////////////////////////////////////////////////////////////////////
+// Add your own #defines here.
+
+
+typedef struct note *Note;
+//////////////////////////////////////////////////////////////////////
+
+// You don't have to use the provided struct track, you are free to
+// make your own struct instead.
+// If you use the provided struct track, you will have to add fields
+// to store other information.
+
+struct track {
+    struct beat *curr;
+    struct beat *head;
+};
+
+// You don't have to use the provided struct beat, you are free to
+// make your own struct instead.
+// If you use the provided struct beat, you may add fields
+// to it to store other information.
+
+struct beat {
+    // You may choose to add or change fields in this struct.
+    struct note *notes;
+    struct beat *next;
+};
+
+// You don't have to use the provided struct note, you are free to
+// make your own struct instead.
+// If you use the provided struct note, you add fields
+// to it to store other information.
+
+struct note {
+    // You may choose to add or change fields in this struct.
+    int octave;
+    int key;
+    struct note *next;
+};
+
+// Add any other structs you define here.
+
+//////////////////////////////////////////////////////////////////////
+
+// Add prototypes for any extra functions you create here.
+//STAGE 1 FUNCTIONS
+Note create_note(int octave, int key, Note note);
+Note loop_notes(int octave, int key, Note note);
+void print_notes(Note note);
+int count_notes(Note note, int octave);
+
+//STAGE 2 FUNCTIONS
+void print_beats(Beat beat, Track track);
+int count_beats(Beat beat);
+
+//STAGE 3 FUNCTIONS
+void free_notes(Note note);
+void free_beats(Beat beat);
+void remove_beat(Beat beat, Track track);
+
+// Return a malloced Beat with fields initialized.
+Beat create_beat(void) {
+    Beat new_beat = malloc(sizeof (struct beat));
+    assert(new_beat != NULL);
+
+    new_beat->next = NULL;
+    new_beat->notes = NULL;
+
+
+    return new_beat;
+}
+
+// You need to implement the following functions.
+// You can find descriptions of what each function should do in beats.h
+
+//////////////////////////////////////////////////////////////////////
+//                        Stage 1 Functions                         //
+//////////////////////////////////////////////////////////////////////
+
+// Add a note to the end of a beat.
+int add_note_to_beat(Beat beat, int octave, int key) {
+    //New note not valid because it is out of bounds
+    //Valid octave (-1 < octave < 10)
+    if (octave < 0 || octave >= 10) {
+        return INVALID_OCTAVE;
+        //Valid key (-1 < key < 12)
+    } else if (key < 0 || key >= 12) {
+        return INVALID_KEY;
+        //Otherwise
+    } else {  
+        //Inserting into an empty list, no checks need to be made 
+        if (beat->notes == NULL) {
+            //Create a new note by calling the create_note function
+            Note new_note = create_note(octave, key, NULL);
+            //Attach this new note to the head of the list of 
+            //notes from the beat
+            beat->notes = new_note; 
+            return VALID_NOTE;
+            //Inserting into a populated list, check the previous node 
+        } else {
+            //Declare and initialise a pointer to check the previous note
+            Note prev = loop_notes(octave, key, beat->notes);
+            //If the given octave is more then the previous note's octave
+            if (octave > prev->octave) {
+                //Create a new note by calling the create_note function
+                Note new_note = create_note(octave, key, prev->next);
+                //Attach this note to the previous note on the list
+                prev->next = new_note;
+                return VALID_NOTE;
+                //If the octaves are the same, check the key, and if it 
+                //is higher than the previous key
+            } else if (octave == prev->octave && key > prev->key) {
+                //Create a new note by calling the create_note function
+                Note new_note = create_note(octave, key, prev->next);
+                //Attach this note to the previous note on the list
+                prev->next = new_note;
+                return VALID_NOTE;
+                //If the key is the same or lower as the previous key
+            } else {
+                return NOT_HIGHEST_NOTE;
+            }       
+        }
+    }
+}
+
+// Count the number of notes in a beat that are in a given octave.
+int count_notes_in_octave(Beat beat, int octave) {
+    //Call the count_notes function
+    int number = count_notes(beat->notes, octave);
+    return number;
+}
+
+// Print the contents of a beat.
+void print_beat(Beat beat) {
+    //Call the print_notes function and then print a new line
+    print_notes(beat->notes);
+    printf("\n");
+}
+
+
+//Create a new note to add to the list of notes
+Note create_note(int new_octave, int new_key, Note new_next) {
+    //Allocate memory for a note node
+    Note new_note = malloc(sizeof(struct note));
+    //Populate that node with new_octave, new_key and new_next
+    new_note->next = NULL;
+    new_note->octave = new_octave;
+    new_note->key = new_key;
+    //Return a pointer to the allocated memory
+    return new_note; 
+}
+
+
+Note loop_notes(int octave, int key, Note note) {
+    //Declare and initialise two pointers to the first note
+    Note prev = note;
+    Note curr = note;
+    //Loop through the existent note nodes and find the previous note
+    while (curr != NULL) {
+        //Make the previous pointer point at the current note
+        prev = curr;
+        //Make the current pointer point at the next note
+        curr = curr->next;
+    }
+    //Return the previous pointer 
+    return prev;
+}
+
+//Count the notes in the list of notes that are of the same octave
+int count_notes(Note note, int octave) {
+    //Declare and initialise a variable for the number of notes
+    int number = 0;
+    //Declare and initialise a pointer to the first note of the list
+    Note curr = note;
+    //Loop through the list of notes until there are none left
+    while (curr != NULL) {
+        //If the octave of the current note is the same as the given octaves
+        //increment the number variable
+        if (octave == curr->octave) {
+            number++;
+        }
+        curr = curr->next;
+    }
+    //Return the number of notes 
+    return number;
+}
+
+//Print the note nodes
+void print_notes(Note note) {
+    //Declare and initialise a pointer to the first note on the list
+    Note curr = note;
+    //Declare and initialise a variable for distinguishing if the note
+    //Is the first on the list or not
+    int first = 0;
+    //Loop through the notes until there are none left on the list
+    while (curr != NULL) {
+        //If the note is the first on the list and the key is less than ten
+        if (first == 0 && curr->key < 10) {
+            //Print the octave and key with a leading zero and make the 
+            //variable equal to one
+            printf(" %d 0%d ", curr->octave, curr->key);
+            first = 1;
+            //If the note is the first on the list and the key is more 
+            //than or equal to ten
+        } else if (first == 0 && curr->key >= 10) {
+            //Print the octave and key and make the variable equal to one
+            printf(" %d %d ", curr->octave, curr->key);
+            first = 1;
+            //If the note is not the first on the list and the key is less
+            //than ten
+        } else if (first == 1 && curr->key < 10) {
+            //Print a dividing line, the octave and key with a leading zero
+            printf("| %d 0%d ", curr->octave, curr->key);
+            //If the note is not the first on the list and the key is more 
+            //than or equal to ten
+        } else if (first == 1 && curr->key >= 10) {
+            //Print a dividing line, the octave and key
+            printf("| %d %d ", curr->octave, curr->key);
+        }
+        curr = curr->next;
+    }
+}
+
+
+//////////////////////////////////////////////////////////////////////
+//                        Stage 2 Functions                         //
+//////////////////////////////////////////////////////////////////////
+
+// Return a malloced track with fields initialized.
+Track create_track(void) {
+    //Allocate memory for a new track
+    Track new_track = malloc(sizeof (struct track));
+    //Make the selected beat pointer point to NULL
+    new_track->curr = NULL;
+    //Make the head pointer point to NULL
+    new_track->head = NULL;
+    //Return the pointer for the allocated memory
+    return new_track;
+}
+
+// Add a beat after the current beat in a track.
+void add_beat_to_track(Track track, Beat beat) {
+    //Inserting into an empty list
+    if (track->head == NULL) {
+        //Make the head pointer point to the new beat
+        track->head = beat;
+        //Inserting into a populated list with no selected beat
+    } else if (track->curr == NULL) {
+        //Shift the other beats forward and push the new beat into the 
+        //first beat position indicated by the head pointer
+        beat->next = track->head;
+        track->head = beat;
+        //Inserting into a populated list with a selected beat
+    } else {
+        //Push the new beat into the space after the selected beat 
+        //and before the next beat in the sequence
+        beat->next = track->curr->next;
+        track->curr->next = beat;
+    }
+}
+
+
+// Set a track's current beat to the next beat.
+int select_next_beat(Track track) {
+    // Given a Track, select the Beat in that Track after the
+    //currently selected Beat, then return the status of the Track.
+    //If there is no selected beat
+    if (track->curr == NULL) {
+        //Select the first beat
+        track->curr = track->head;
+        //Otherwise move the selected beat to the next beat
+    } else {
+        track->curr = track->curr->next;
+    }
+    //If there is no selected beat, return TRACK_STOPPED
+    if (track->curr == NULL) {
+        return TRACK_STOPPED;
+        //Else return TRACK_PLAYING
+    } else {
+        return TRACK_PLAYING;
+    }
+}
+
+
+// Print the contents of a track.
+void print_track(Track track) {
+    //If there are beats on the track
+    if (track->head != NULL) {
+        //Call the print beats function
+        print_beats(track->head, track);
+    }
+}
+
+//Print the contents of the beats that exist
+void print_beats(Beat beat, Track track) {
+    //Declare and initialise a pointer to the first beat on the list
+    Beat curr = beat;
+    //Declare and initialise a variable to indicate the position of the beat
+    int beat_position = 1;
+    //Loop through the list of notes while they exist
+    while (curr != NULL) {
+        //If the current beat is the selected beat
+        if (curr == track->curr) {
+            //Print an arrow and the position of the beat
+            printf(">[%d]", beat_position);
+            //Call the print notes function
+            print_notes(curr->notes);
+        } else {
+            //Print a space and the position of the beat
+            printf(" [%d]", beat_position);
+            //Call the print notes function
+            print_notes(curr->notes);
+        }
+        //Increment the positional variable
+        beat_position++;
+        curr = curr->next;
+        printf("\n");
+    }
+}
+
+
+
+// Count beats after the current beat in a track.
+int count_beats_left_in_track(Track track) {
+    //Declare and initialise a variable for the number of beats in the track
+    int number_beats = 0;
+    //If there is no selected beat
+    if (track->curr == NULL) {
+        //Call the count beats function starting from the head
+        number_beats = count_beats(track->head);
+        //If there is a selected beat
+    } else {
+        //Call the count beats function starting from the selected beat
+        number_beats = count_beats(track->curr);
+        //Take one away from the number returned as the selected beat 
+        //is not counted
+        number_beats = number_beats - 1;
+    }
+    return number_beats;
+}
+
+//Counts the number of beats in the track from a given point
+int count_beats(Beat beat) {
+    //Declare and initialise a variable for the number of beats
+    int number_beats = 0;
+    //Declare and initialise a pointer to the first beat 
+    Beat curr = beat;
+    //Loop through the list of beats while they exist
+    while (curr != NULL) {
+        //Increment the number variable
+        number_beats++;
+        curr = curr->next;
+    }
+    return number_beats;
+}
+
+//////////////////////////////////////////////////////////////////////
+//                        Stage 3 Functions                         //
+//////////////////////////////////////////////////////////////////////
+
+// Free the memory of a beat, and any memory it points to.
+void free_beat(Beat beat) { 
+    //If beats exist
+    if (beat != NULL) {
+        //Call the free notes function to free all the notes in the beat
+        free_notes(beat->notes);
+        //Free the memory of the beat
+        free(beat);
+    } 
+}
+
+void free_notes(Note note) {
+    if (note != NULL) {
+        //Declare and intialise a pointer to loop through the list of notes
+        Note curr = note;
+        //Loop through the list of notes
+        while (curr != NULL) {
+            //Make a temporary pointer 
+            Note temp_note = curr;
+            //Move the pointer to the next note
+            curr = curr->next;
+            //Free the note using the temporary pointer
+            free(temp_note);
+        }  
+    } 
+}
+
+// Free the memory of a track, and any memory it points to.
+void free_track(Track track) {
+    //If the track exists
+    if (track != NULL) {
+        //Call the free beat function to free all the beats in the track
+        free_beat(track->head);
+        //Free the memory of the track
+        free(track);
+    } 
+}
+
+
+// Remove the currently selected beat from a track.
+int remove_selected_beat(Track track) {
+    //If there is no selected beat
+    if (track->curr == NULL) {
+        return TRACK_STOPPED;
+        //If there is no beat in the list
+    } else if (track->head == NULL) {
+        return TRACK_STOPPED;
+        //If there is at least one beat on the list and there is 
+        //a selected beat
+    } else {
+        //Call the remove beat function 
+        remove_beat(track->curr, track);
+        //If there is a selected beat, return TRACK_PLAYING
+        if (track->curr != NULL) {
+            return TRACK_PLAYING;
+            //If there is no selected beat, return TRACK_STOPPED
+        } else {
+            return TRACK_STOPPED;
+        }
+    }
+}
+
+void remove_beat(Beat beat, Track track) {
+    //If the first beat is the selected beat
+    if (track->head == track->curr) {
+        //If the first beat is the only beat that exists
+        if (track->head->next == NULL) {
+            //Declare and initialise a temporary pointer to the first beat
+            Beat temp = track->head;
+            //The track now has no beats, so head points to NULL
+            track->head = NULL;
+            //The is also now no currently selected beat
+            track->curr = NULL;
+            //Call the free beat function for that beat
+            //This will also free the notes attached to the beat
+            free_beat(temp);
+            //If the first beat is not the only beat that exists
+        } else {
+            //Declare and initialise a temporary pointer to the first beat
+            Beat temp = track->head;
+            //Make the head pointer point to the next node in the list
+            //after the selected beat 
+            track->head = track->head->next;
+            //Make the selected beat the next beat
+            track->curr = track->head;
+            //Call the free beat function
+            free_beat(temp);
+        }
+        //If the first beat is not the selected beat
+    } else {
+        //Declare and initialise a current and previous node starting
+        //at the head
+        Beat curr = track->head;
+        Beat prev = track->head;
+        //Loop through the list until the selected beat is reached by 
+        //the current pointer
+        while (curr != track->curr) {
+            prev = curr;
+            curr = curr->next;
+        }
+        //If the selected beat is at the end of the list 
+        if (curr->next == NULL) {
+            //Declare and initialise a temporary pointer to the selected beat
+            Beat temp = curr;
+            //Point the previous beat to NULL
+            prev->next = NULL;
+            //Make it so that no beat is selected 
+            track->curr = NULL;
+            //Call the free beat function 
+            free_beat(temp);
+            //If the selected beat is not at the end of the list 
+        } else {
+            //Declare and initialise a temporary pointer to the selected beat
+            Beat temp = curr;
+            //Point the previous beat to the beat after the selected beat
+            prev->next = curr->next;
+            //Make the selected beat the next beat
+            track->curr = curr->next;
+            //Call the free beat function 
+            free_beat(temp);
+        }
+    }
+}
